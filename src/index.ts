@@ -23,16 +23,9 @@ let agent2: FishjamAgent | null = null;
 
 app.post("/join-room", async (req, res) => {
   try {
-    const { roomName, peerName } = req.body;
-    // Create room
+    const { roomId } = req.body;
 
-    const room = await fishjamClient.getRoom(
-      "4e07-8b2a-f6705b4ba3a7-3736303734623533333737373432373061306531353862613035393137356164-73616e64626f78-6669736874616e6b4031302e3234302e31322e313335" as RoomId
-    );
-    // Add peer
-    const { peer, peerToken } = await fishjamClient.createPeer(room.id, {
-      metadata: { name: peerName },
-    });
+    const room = await fishjamClient.getRoom(roomId as RoomId);
 
     const agentOptions = {
       subscribeMode: "auto",
@@ -72,7 +65,6 @@ app.post("/join-room", async (req, res) => {
 
     res.json({
       roomId: room.id,
-      peerToken,
     });
   } catch (error: any) {
     res.status(500).json({ error: error.message });
